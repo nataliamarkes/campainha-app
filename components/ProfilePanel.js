@@ -5,8 +5,9 @@ const styles = StyleSheet.create({
 	profilePanel: {
 		display: 'flex',
 		flexDirection: 'row',
-		paddingTop: 20,
-		paddingBottom: 10
+		padding: 20,
+		borderBottomColor: '#e3e3e3',
+		borderBottomWidth: 1
 	},
 	profileText: {
 		justifyContent: 'center',
@@ -21,6 +22,10 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white'
 	},
 	name: {
+		color: '#8f8f8f',
+		fontSize: 20
+	},
+	primaryName: {
 		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 20,
@@ -29,6 +34,11 @@ const styles = StyleSheet.create({
 		textShadowRadius: 1
 	},
 	role: {
+		color: '#b2b2b2',
+		fontStyle: 'italic',
+		fontSize: 18,
+	},
+	primaryRole: {
 		color: 'white',
 		fontStyle: 'italic',
 		fontSize: 18,
@@ -47,8 +57,8 @@ export default class ProfilePanel extends React.Component {
 			<View style={styles.profilePanel}>
 				<Image style={styles.icon} source={this.props.icon} />
 				<View style={styles.profileText}>
-					<Text style={styles.name}>{this.props.name}</Text>
-					<Text style={styles.role}>{this.props.role}</Text>
+					<Text style={this.props.primary ? styles.name:styles.primaryName}>{this.props.name}</Text>
+					<Text style={this.props.primary ? styles.role:styles.primaryRole}>{this.props.role}</Text>
 				</View>
 			</View>
 		);
