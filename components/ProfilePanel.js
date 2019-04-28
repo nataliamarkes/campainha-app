@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
+import { ImagePicker } from 'expo';
 
 const styles = StyleSheet.create({
 	profilePanel: {
@@ -49,16 +50,35 @@ const styles = StyleSheet.create({
 });
 
 export default class ProfilePanel extends React.Component {
+	state = {
+		avatarSource: null
+	};
+
 	constructor(props) {
 		super(props);
+		this.pickPhoto = this.pickPhoto.bind(this);
 	}
+
+	async pickPhoto() {
+		const data = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			aspect: [1, 1],
+			quality: 0.5
+		});
+		console.log(data);
+		this.setState({ avatarSource: data.uri });
+	}
+
 	render() {
 		return (
 			<View style={styles.profilePanel}>
-				<Image style={styles.icon} source={this.props.icon} />
+				<TouchableOpacity onPress={this.pickPhoto}>
+					<Image style={styles.icon} source={{ uri: this.state.avatarSource }} />
+				</TouchableOpacity>
 				<View style={styles.profileText}>
-					<Text style={this.props.primary ? styles.name:styles.primaryName}>{this.props.name}</Text>
-					<Text style={this.props.primary ? styles.role:styles.primaryRole}>{this.props.role}</Text>
+					<Text style={this.props.primary ? styles.name : styles.primaryName}>{this.props.name}</Text>
+					<Text style={this.props.primary ? styles.role : styles.primaryRole}>{this.props.role}</Text>
 				</View>
 			</View>
 		);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo';
 import SearchComponent from './components/SearchComponent';
 import ProfilePanel from './components/ProfilePanel';
@@ -14,7 +14,7 @@ export default class App extends React.Component {
             <Text style={styles.backgroundText}>Finance Centre Tower, Manilla</Text>
           </ImageBackground>
           <View style={styles.container}>
-            <ProfilePanel color="white" name="Daniel Nora" role="Morador" icon={profileIcon} />
+            <ProfilePanel name="Daniel Castro*" role="Morador" icon={profileIcon} />
             <SearchComponent />
           </View>
         </LinearGradient>
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
   backgroundText: {
     color: 'black',
     fontStyle: 'italic',
-    paddingBottom: 20,
-    fontSize: 24
+    paddingBottom: 20
   },
 });
