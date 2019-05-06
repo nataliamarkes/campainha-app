@@ -23,11 +23,11 @@ const styles = StyleSheet.create({
 		alignItems: 'stretch'
 	},
 	backgroundGradient: {
-		flex: 1
+		flex: 1,
 	},
 	container: {
 		flex: 1,
-		padding: 30
+		padding: 30,
 	},
 	background: {
 		width: '100%',

@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
 	input: {
 		backgroundColor: 'white',
 		padding: 10,
+		fontSize: 18,
 		color: '#595959',
 		elevation: 5,
 		shadowColor: 'black',
@@ -33,7 +34,7 @@ export default class SearchVisitor extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Text style={styles.label}>Procure o nome do visitante</Text>
-				<TextInput style={styles.input} placeholder='Nome' onChangeText={text => this.props.onNameProvided(text)}></TextInput>
+				<TextInput style={styles.input} placeholder='Nome' onChangeText={text => this.props.onSearch(text)}></TextInput>
 			</View>
 		);
 	};

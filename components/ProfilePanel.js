@@ -1,14 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity } from 'react-native';
-import { ImagePicker, Permissions } from 'expo';
+import { StyleSheet, View, Image, Text, TouchableNativeFeedback } from 'react-native';
 
 const styles = StyleSheet.create({
 	profilePanel: {
 		display: 'flex',
 		flexDirection: 'row',
-		padding: 20,
-		borderBottomColor: '#e3e3e3',
-		borderBottomWidth: 1
+		padding: 20
 	},
 	profileText: {
 		justifyContent: 'center',
@@ -53,56 +50,20 @@ export default class ProfilePanel extends React.Component {
 	state = {
 		defaultAvatar: require('../assets/default-avatar.png'),
 		avatarSource: null,
-		hasPermissions: false,
 		name: 'John Doe'
 	};
 
-	constructor(props) {
-		super(props);
-		this.pickPhoto = this.pickPhoto.bind(this);
-	}
-
-	async componentDidMount() {
-		const permissionCamera = await Permissions.getAsync(Permissions.CAMERA);
-		const permissionCameraRoll = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-		if ((permissionCamera.status !== 'granted') || (permissionCameraRoll.status !== 'granted')) {
-			const newPermissionCamera = await Permissions.askAsync(Permissions.CAMERA);
-			const newPermissionCameraRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-			if ((newPermissionCamera.status == 'granted') && (newPermissionCameraRoll.status == 'granted')) {
-				this.setState({ hasPermissions: true });
-			}
-		} else {
-			this.setState({ hasPermissions: false });
-		}
-	}
-
-	async pickPhoto() {
-		/* const data = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			aspect: [1, 1],
-			quality: 0.5
-		}); */
-		const data = await ImagePicker.launchCameraAsync({
-			allowsEditing: true,
-			aspect: [1, 1],
-			quality: 0.5
-		})
-		console.log(data);
-		this.setState({ avatarSource: data.uri });
-	}
-
 	render() {
 		return (
-			<View style={styles.profilePanel}>
-				{this.props.editable ? <TouchableOpacity onPress={this.pickPhoto}>
+			<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()}>
+				<View style={styles.profilePanel}>
 					<Image style={styles.icon} source={this.state.avatarSource ? { uri: this.state.avatarSource } : this.state.defaultAvatar} />
-				</TouchableOpacity> : <Image style={styles.icon} source={this.state.avatarSource ? { uri: this.state.avatarSource } : this.state.defaultAvatar} />}
-				<View style={styles.profileText}>
-					<Text style={this.props.primary ? styles.name : styles.primaryName}>{this.props.name ? this.props.name : this.state.name}</Text>
-					<Text style={this.props.primary ? styles.role : styles.primaryRole}>{this.props.role}</Text>
+					<View style={styles.profileText}>
+						<Text style={this.props.primary ? styles.name : styles.primaryName}>{this.props.name ? this.props.name : this.state.name}</Text>
+						<Text style={this.props.primary ? styles.role : styles.primaryRole}>{this.props.role}</Text>
+					</View>
 				</View>
-			</View>
+			</TouchableNativeFeedback>
 		);
 	}
 };
