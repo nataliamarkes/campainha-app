@@ -7,14 +7,14 @@ export default StyleSheet.create({
 		alignItems: 'center',
 	},
 	touchablePhoto: {
-		width: 130,
-		height: 130,
+		width: 160,
+		height: 160,
 	},
 	photo: {
-		width: 130,
-		height: 130,
+		width: 160,
+		height: 160,
 		borderRadius: 85,
 		borderColor: 'white',
-		borderWidth: 5
+		borderWidth: 8
 	},
 });

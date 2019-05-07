@@ -1,11 +1,13 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { Font } from 'expo';
 
+import firebase from './firebase';
 import InitialScreen from './screens/InitialScreen';
 import MainScreen from './screens/MainScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
 import LoginScreen from './screens/LoginScreen';
-import { Font } from 'expo';
+import ProfileScreen from './screens/ProfileScreen';
 
 export default class App extends React.Component {
   state = { finishedLoading: false }
@@ -26,9 +28,10 @@ const AppNavigator = createStackNavigator({
   Login: LoginScreen,
   Registration: RegistrationScreen,
   Main: MainScreen,
+  Profile: ProfileScreen,
 },
   {
-    initialRouteName: "Main",
+    initialRouteName: "Profile",
     headerMode: 'none',
     navigationOptions: {
       headerVisible: false,

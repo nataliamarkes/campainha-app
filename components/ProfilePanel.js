@@ -55,7 +55,7 @@ export default class ProfilePanel extends React.Component {
 
 	render() {
 		return (
-			<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()}>
+			<TouchableNativeFeedback background={TouchableNativeFeedback.SelectableBackground()} onPress={() => this.props.navigation.navigate('Profile')}>
 				<View style={styles.profilePanel}>
 					<Image style={styles.icon} source={this.state.avatarSource ? { uri: this.state.avatarSource } : this.state.defaultAvatar} />
 					<View style={styles.profileText}>

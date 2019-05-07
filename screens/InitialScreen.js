@@ -16,17 +16,19 @@ const styles = StyleSheet.create({
 })
 
 export default class InitialScreen extends React.Component {
+	state = {
+		image: null
+	};
+
 	constructor(props) {
 		super(props);
-		this.comecar = this.comecar.bind(this);
-		this.login = this.login.bind(this);
 	}
 
-	comecar() {
+	comecar = () => {
 		this.props.navigation.navigate('Registration');
 	}
 
-	login() {
+	login = () => {
 		this.props.navigation.navigate('Login');
 	}
 

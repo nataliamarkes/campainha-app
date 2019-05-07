@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo';
 export default class BaseLayout extends React.Component {
 	render = () => (
 		<View style={styles.wrapper}>
-			<LinearGradient colors={['purple', '#09c']} start={[0, 1]} end={[1, 0]} style={styles.backgroundGradient}>
+			<LinearGradient colors={['#7f0fe2', '#0eacd2']} start={[0, 1]} end={[1, 0]} style={styles.backgroundGradient}>
 				<ImageBackground source={require('../assets/f5afdc64208ecd704a2e1124e068b6b1.jpg')} style={styles.background}>
 					<Text style={styles.backgroundText}>Finance Centre Tower, Manilla</Text>
 				</ImageBackground>
