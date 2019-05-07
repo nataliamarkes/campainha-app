@@ -31,7 +31,7 @@ const AppNavigator = createStackNavigator({
   Profile: ProfileScreen,
 },
   {
-    initialRouteName: "Profile",
+    initialRouteName: "Main",
     headerMode: 'none',
     navigationOptions: {
       headerVisible: false,

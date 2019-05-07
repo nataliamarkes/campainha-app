@@ -14,6 +14,12 @@ const style = StyleSheet.create({
         backgroundColor: 'white',
         padding: 20,
     },
+    screenTitle: {
+        fontWeight: 'bold',
+        color: 'white',
+        fontSize: 28,
+        marginVertical: 10,
+    },
     name: {
         fontSize: 24,
         fontWeight: 'bold',
@@ -57,6 +63,7 @@ export default class Profile extends Component {
         return (
             <BaseLayout>
                 <AppLogo />
+                <Text style={style.screenTitle}>Seu Perfil</Text>
                 <ScrollView style={style.card}>
                     <UserPhoto />
                     <TouchableOpacity>
@@ -65,7 +72,7 @@ export default class Profile extends Component {
                         </View>
                     </TouchableOpacity>
                     <Text style={style.name}>Daniel Nora</Text>
-                    <View style={style.infoWrapper}>
+                    <TouchableOpacity style={style.infoWrapper}>
                         <View style={style.titleWrapper}>
                             <FontAwesome name="mobile" size={28} />
                             <Text style={style.title}>Telefone</Text>
@@ -73,8 +80,8 @@ export default class Profile extends Component {
                         <View>
                             <Text style={style.text}>(61) 1234-4567</Text>
                         </View>
-                    </View>
-                    <View style={style.infoWrapper}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={style.infoWrapper}>
                         <View style={style.titleWrapper}>
                             <Entypo name="address" size={20} />
                             <Text style={style.title}>Endereço</Text>
@@ -82,21 +89,21 @@ export default class Profile extends Component {
                         <View>
                             <Text style={style.text}>Rua das Avenidas, nº Zero</Text>
                         </View>
-                    </View>
+                    </TouchableOpacity>
                     <View style={style.infoWrapper}>
                         <View style={style.titleWrapper}>
                             <FontAwesome name="id-card-o" size={20} />
                             <Text style={style.title}>Documento de Identificação</Text>
                         </View>
                         <View style={{ flexDirection: 'row', padding: 10 }}>
-                            <View style={{flex:1}}>
+                            <TouchableOpacity style={{flex:1}}>
                                 <Image source={idFront} style={{flex: 1, height: 150, width: 150}} resizeMode="contain" />
                                 <Text style={{textAlign: 'center'}}>Frente</Text>
-                            </View>
-                            <View style={{flex:1}}>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{flex:1}}>
                                 <Image source={idFront} style={{flex: 1, height: 150, width: 150}} resizeMode="contain" />
                                 <Text style={{textAlign: 'center'}}>Verso</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </View>
                 </ScrollView>
