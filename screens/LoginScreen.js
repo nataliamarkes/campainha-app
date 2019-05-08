@@ -1,10 +1,11 @@
 import React from 'react';
 import { Alert, View, TextInput, Text, TouchableOpacity, ToastAndroid, Image, StyleSheet } from 'react-native';
 
+import firebase from '../firebase';
+
 import BaseLayout from '../components/BaseLayout';
 import Button from '../components/Button';
 import AppLogo from '../components/AppLogo';
-import bell from '../assets/bell.png';
 
 const styles = StyleSheet.create({
 	background: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 60, justifyContent: 'space-between' },
@@ -37,26 +38,34 @@ export default class LoginScreen extends React.Component {
 		super(props);
 		this.state = {
 			buttonDisabled: true,
-			username: '',
+			email: '',
 			password: '',
 		}
 		this.continuar = this.continuar.bind(this);
-		this.setUsername = this.setUsername.bind(this);
+		this.setEmail = this.setEmail.bind(this);
 		this.setPassword = this.setPassword.bind(this);
 	}
 
-	continuar() {
-		if (this.state.username == 'daniel' && this.state.password == 'nora')
+	componentDidMount() {
+		if (firebase.auth().currentUser)
 			this.props.navigation.navigate('Main');
-		else Alert.alert('Erro', 'Usuário ou senha incorreta.');
+	}
+
+	continuar() {
+		firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+		.then(() => {
+			this.props.navigation.navigate('Main');
+		}, (error) => {
+			Alert.alert('Erro', error.message);
+		});
 	}
 
 	shouldEnableButton() {
-		this.setState({ buttonDisabled: !this.state.username || !this.state.password });
+		this.setState({ buttonDisabled: !this.state.email || !this.state.password });
 	}
 
-	setUsername(username) {
-		this.setState({ username });
+	setEmail(email) {
+		this.setState({ email });
 		this.shouldEnableButton();
 	}
 
@@ -71,9 +80,9 @@ export default class LoginScreen extends React.Component {
 				<View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'stretch' }}>
 					<AppLogo />
 					<View>
-						<TextInput placeholder="Usuário" style={styles.input} onChangeText={this.setUsername} />
+						<TextInput placeholder="Email" style={styles.input} onChangeText={this.setEmail} value={this.state.email} />
 						<View style={{ height: 10 }} />
-						<TextInput placeholder="Senha" style={styles.input} secureTextEntry={true} onChangeText={this.setPassword} />
+						<TextInput placeholder="Senha" style={styles.input} secureTextEntry={true} onChangeText={this.setPassword} value={this.state.password} />
 					</View>
 					<Button onPress={this.continuar} disabled={this.state.buttonDisabled}>Continuar</Button>
 				</View>

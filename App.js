@@ -1,13 +1,13 @@
 import React from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { Font } from 'expo';
 
-import firebase from './firebase';
 import InitialScreen from './screens/InitialScreen';
 import MainScreen from './screens/MainScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
 import LoginScreen from './screens/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import AuthLoadingScreen from './screens/AuthLoadingScreen';
 
 export default class App extends React.Component {
   state = { finishedLoading: false }
@@ -24,18 +24,30 @@ export default class App extends React.Component {
 }
 
 const AppNavigator = createStackNavigator({
+  Main: MainScreen,
+  Profile: ProfileScreen,
+}, {
+  headerMode: 'none',
+  navigationOptions: {
+    headerVisible: false,
+  }
+});
+
+const AuthNavigator = createStackNavigator({
   Initial: InitialScreen,
   Login: LoginScreen,
   Registration: RegistrationScreen,
-  Main: MainScreen,
-  Profile: ProfileScreen,
-},
-  {
-    initialRouteName: "Main",
-    headerMode: 'none',
-    navigationOptions: {
-      headerVisible: false,
-    }
-  });
+}, {
+  headerMode: 'none',
+  navigationOptions: {
+    headerVisible: false,
+  }
+});
 
-const AppContainer = createAppContainer(AppNavigator);
+const AppContainer = createAppContainer(createSwitchNavigator({
+  AuthLoading: AuthLoadingScreen,
+  App: AppNavigator,
+  Auth: AuthNavigator,
+}, {
+  initialRouteName: "AuthLoading",
+}));

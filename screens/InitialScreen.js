@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableNativeFeedback, Image, StyleSheet } from 'react-native';
 
+import firebase from '../firebase';
 import BaseLayout from '../components/BaseLayout';
 import Button from '../components/Button';
 import bell from '../assets/bell.png';
@@ -22,6 +23,16 @@ export default class InitialScreen extends React.Component {
 
 	constructor(props) {
 		super(props);
+	}
+
+	componentDidMount() {
+		if (firebase.auth().currentUser)
+			this.props.navigation.navigate('Main');
+	}
+
+	componentDidUpdate() {
+		if (firebase.auth().currentUser)
+			this.props.navigation.navigate('Main');
 	}
 
 	comecar = () => {

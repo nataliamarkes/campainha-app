@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, KeyboardAvoidingView, TextInput, Text, Image, StyleSheet, TouchableNativeFeedback } from 'react-native';
+import { View, KeyboardAvoidingView, TextInput, Text, Image, StyleSheet, ActivityIndicator, TouchableNativeFeedback } from 'react-native';
 
 import firebase from '../firebase';
 import BaseLayout from '../components/BaseLayout';
@@ -42,27 +42,51 @@ const REGISTRATION_STATE = {
 export default class RegistrationScreen extends React.Component {
 	state = {
 		registrationState: REGISTRATION_STATE.BASIC_DATA,
-		user: {
-			email: '',
-			password: '',
-		},
+		name: '',
+		phone: '',
+		email: '',
+		password: '',
+		ref: null,
+		showActivityIndicator: false,
 	}
 
 	constructor(props) {
 		super(props);
 		this.continuar = this.continuar.bind(this);
+		this.setEmail = this.setEmail.bind(this);
+		this.setPassword = this.setPassword.bind(this);
+		this.handleNameField = this.handleNameField.bind(this);
+		this.handlePhoneField = this.handlePhoneField.bind(this);
 	}
 
-	continuar() {
+	componentDidMount() {
+		if (firebase.auth().currentUser)
+			this.props.navigation.navigate('Main');
+	}
+
+	async continuar() {
 		switch (this.state.registrationState) {
 			case REGISTRATION_STATE.BASIC_DATA:
+				this.setState({ showActivityIndicator: true });
+				const ref = await firebase.firestore().collection('users').add({
+					name: this.state.name,
+					phone: this.state.phone,
+				});
+				this.setState({ ref });
+				this.setState({ showActivityIndicator: false });
 				this.setState({ registrationState: REGISTRATION_STATE.USER_ID });
 				break;
 			case REGISTRATION_STATE.USER_ID:
+				const idFrenteRef = firebase.storage().ref(`documents/${this.state.ref.id}/frente.${ext}`);
 				this.setState({ registrationState: REGISTRATION_STATE.EMAIL_AND_PASSWORD });
 				break;
 			case REGISTRATION_STATE.EMAIL_AND_PASSWORD:
-				firebase.auth().createUserWithEmailAndPassword(this.state.user.email, this.state.user.password);
+				firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+				.then(() => {
+					this.props.navigation.navigate('Main');
+				}, (error) => {
+					Alert.alert('Erro', error.message);
+				});
 				break;
 		}
 		// TODO: Add react-native-firebase to make this work
@@ -87,24 +111,46 @@ export default class RegistrationScreen extends React.Component {
 		}); */
 	}
 
+	setEmail(email) {
+		this.setState({ email });
+	}
+
+	setPassword(password) {
+		this.setState({ password });
+	}
+
 	nextButtonEnabled() {
 		switch (this.state.registrationState) {
 			case REGISTRATION_STATE.EMAIL_AND_PASSWORD:
-				return this.state.user.email && this.state.user.password;
+				return this.state.email && this.state.password;
 		}
 		return true;
 	}
 
+	handleNameField(name) {
+		this.setState({ name });
+	}
+
+	handlePhoneField(phone) {
+		this.setState({ phone });
+	}
+
 	registrationBox() {
+		if (this.state.showActivityIndicator)
+			return (
+				<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+					<ActivityIndicator size="large" color="#fff"/>
+				</View>
+			);
 		if (this.state.registrationState == REGISTRATION_STATE.BASIC_DATA)
 			return (
 				<>
 					<Text style={{ color: 'white', textAlign: 'center', fontSize: 18, }}>Vamos fazer um registro rápido.</Text>
 					<UserPhoto />
 					<View>
-						<TextInput placeholder="Nome completo" style={styles.input} textContentType="name" autoCapitalize="words" />
+						<TextInput placeholder="Nome completo" style={styles.input} textContentType="name" autoCapitalize="words" onChangeText={this.handleNameField} />
 						<View style={{ height: 10 }} />
-						<TextInput placeholder="Telefone" style={styles.input} textContentType="telephoneNumber" keyboardType="phone-pad" />
+						<TextInput placeholder="Telefone" style={styles.input} textContentType="telephoneNumber" keyboardType="phone-pad" onChangeText={this.handlePhoneField}/>
 					</View>
 				</>
 			)
@@ -125,7 +171,10 @@ export default class RegistrationScreen extends React.Component {
 			);
 		else if (this.state.registrationState == REGISTRATION_STATE.EMAIL_AND_PASSWORD)
 			return (
-				<View></View>
+				<View>
+					<TextInput placeholder="Email" style={styles.input} onChangeText={this.setEmail} value={this.state.email} />
+					<TextInput placeholder="Senha" style={styles.input} secureTextEntry={true} onChangeText={this.setPassword} value={this.state.password} />
+				</View>
 			);
 	}
 
