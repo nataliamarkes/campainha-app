@@ -11,22 +11,24 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		textShadowColor: 'rgba(0, 0, 0, 0.3)',
 		textShadowOffset: { width: 1, height: 1 },
-		textShadowRadius: 1
+		textShadowRadius: 1,
 	},
 	input: {
 		backgroundColor: 'white',
-		padding: 10,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
 		fontSize: 18,
 		color: '#595959',
-		elevation: 5,
+		//elevation: 5,
+		borderRadius: 50,
 		shadowColor: 'black',
 		shadowOffset: { width: 5, height: 5 },
 		shadowOpacity: 0.3,
-		shadowRadius: 10
+		shadowRadius: 10,
 	},
 	container: {
 		paddingBottom: 10,
-	}
+	},
 });
 
 export default class SearchVisitor extends React.Component {
@@ -34,8 +36,8 @@ export default class SearchVisitor extends React.Component {
 		return (
 			<View style={styles.container}>
 				<Text style={styles.label}>Procure o nome do visitante</Text>
-				<TextInput style={styles.input} placeholder='Nome' onChangeText={text => this.props.onSearch(text)}></TextInput>
+				<TextInput style={styles.input} placeholder="Nome" onChangeText={(text) => this.props.onSearch(text)} />
 			</View>
 		);
-	};
-};
+	}
+}

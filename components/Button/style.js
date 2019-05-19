@@ -8,11 +8,12 @@ export default StyleSheet.create({
 	button: {
 		height: 50,
 		padding: 10,
+		borderRadius: 5,
 		borderColor: 'white',
 		borderWidth: 1,
-		borderRadius: 5,
+		backgroundColor: 'rgba(255, 255, 255, 0.1)',
 		flexDirection: 'row',
-		justifyContent: 'space-evenly',
+		justifyContent: 'space-between',
 		alignItems: 'center',
 	},
 	disabled: {
@@ -21,6 +22,8 @@ export default StyleSheet.create({
 	text: {
 		flex: 1,
 		color: 'white',
-		fontSize: 28,
+		fontSize: 18,
+		textAlign: 'center',
+		fontWeight: 'bold',
 	},
 });

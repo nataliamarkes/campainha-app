@@ -3,56 +3,58 @@ import { TouchableOpacity, Image, View } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
 
 import style from './style.js';
-import avatar from '../../assets/default-avatar2.png';
+import UserContext from '../../contexts/UserContext';
+import defaultAvatar from '../../assets/default-avatar2.png';
 
 class UserPhoto extends React.Component {
-	state = {
-		avatarSource: null,
-		hasPermissions: false,
-	}
-	constructor(props) {
-		super(props);
-		this.setPhoto = this.setPhoto.bind(this);
-	}
-
-	async componentDidMount() {
-		const permissionCamera = await Permissions.getAsync(Permissions.CAMERA);
-		const permissionCameraRoll = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-		if ((permissionCamera.status !== 'granted') || (permissionCameraRoll.status !== 'granted')) {
-			const newPermissionCamera = await Permissions.askAsync(Permissions.CAMERA);
-			const newPermissionCameraRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-			if ((newPermissionCamera.status == 'granted') && (newPermissionCameraRoll.status == 'granted')) {
-				this.setState({ hasPermissions: true });
-			}
-		} else {
-			this.setState({ hasPermissions: false });
+	async getPermissions() {
+		const permissionCamera = await Permissions.askAsync(Permissions.CAMERA);
+		const permissionCameraRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+		if (permissionCamera.status !== 'granted' || permissionCameraRoll.status !== 'granted') {
+			return false;
 		}
+		return true;
 	}
 
-	async setPhoto() {
-		/* const data = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			aspect: [1, 1],
-			quality: 0.5
-		}); */
+	takePhoto = async () => {
+		if (!await this.getPermissions()) {
+			Alert.alert('Erro', 'Você precisa dar permissão para tirar foto.');
+			return;
+		}
 		const data = await ImagePicker.launchCameraAsync({
 			allowsEditing: true,
-			aspect: [1, 1],
-			quality: 0.5
-		})
-		console.log(data);
-		this.setState({ avatarSource: data.uri });
-	}
+			aspect: [ 1, 1 ],
+			quality: 0.5,
+		});
+		return data.uri;
+	};
+
+	getUserPhoto = (user) => {
+		const thereIsNoUser = user == null;
+		const userHasNoPhoto = user && user.photo === null;
+
+		if (thereIsNoUser || userHasNoPhoto) return defaultAvatar;
+		else {
+			console.log('User photo: ', user.photo);
+			return { uri: user.photo };
+		}
+	};
 
 	render() {
 		return (
-			<View style={style.photoView}>
-				<TouchableOpacity onPress={this.setPhoto} style={style.touchablePhoto}>
-					<Image source={this.state.avatarSource ? { uri: this.state.avatarSource } : avatar} style={style.photo} />
-				</TouchableOpacity>
-			</View>
-		)
+			<UserContext.Consumer>
+				{({ user, setUser }) => (
+					<View style={style.photoView}>
+						<TouchableOpacity
+							onPress={async () => setUser({ photo: await this.takePhoto() })}
+							style={style.touchablePhoto}
+						>
+							<Image source={this.getUserPhoto(user)} style={style.photo} />
+						</TouchableOpacity>
+					</View>
+				)}
+			</UserContext.Consumer>
+		);
 	}
 }
 
