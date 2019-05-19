@@ -9,10 +9,13 @@ import UserContext from '../../../contexts/UserContext';
 
 const style = {
 	title: {
-		color: 'white',
+		color: '#edd228',
+		padding: 10,
+		borderRadius: 5,
+		backgroundColor: 'rgba(0, 0, 0, 0.6)',
 		fontWeight: 'bold',
 		textAlign: 'center',
-		fontSize: 18,
+		fontSize: 20,
 	},
 	content: {
 		flex: 1,
@@ -20,7 +23,7 @@ const style = {
 	},
 	input: {
 		backgroundColor: 'white',
-		color: '#6014b7',
+		color: '#0084EB',
 		padding: 10,
 		fontSize: 18,
 		elevation: 5,
@@ -49,6 +52,8 @@ export default class BasicDataScreen extends Component {
 									textContentType="name"
 									autoCapitalize="words"
 									onChangeText={(name) => setUser({ name })}
+									autoFocus
+									onSubmitEditing={() => phoneInput.focus()}
 								/>
 								<TextInput
 									placeholder="Telefone"
@@ -56,6 +61,7 @@ export default class BasicDataScreen extends Component {
 									textContentType="telephoneNumber"
 									keyboardType="phone-pad"
 									onChangeText={(phone) => setUser({ phone })}
+									ref={(el) => (phoneInput = el)}
 								/>
 							</React.Fragment>
 						)}

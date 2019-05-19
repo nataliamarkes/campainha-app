@@ -26,7 +26,7 @@ class UserPhoto extends React.Component {
 			aspect: [ 1, 1 ],
 			quality: 0.5,
 		});
-		return data.uri;
+		return data.uri || null;
 	};
 
 	getUserPhoto = (user) => {
@@ -46,7 +46,7 @@ class UserPhoto extends React.Component {
 				{({ user, setUser }) => (
 					<View style={style.photoView}>
 						<TouchableOpacity
-							onPress={async () => setUser({ photo: await this.takePhoto() })}
+							onPress={async () => setUser({ photo: await this.takePhoto() })} // [BUG] Assumindo que o usuário não cancela a foto!
 							style={style.touchablePhoto}
 						>
 							<Image source={this.getUserPhoto(user)} style={style.photo} />
